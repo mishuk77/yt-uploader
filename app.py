@@ -97,6 +97,26 @@ def log(job: dict, msg: str):
     job["log"].append(f"{time.strftime('%H:%M:%S')} {msg}")
 
 
+# ---------------------------------------------------------------- public pages (for the OAuth consent screen)
+PAGE = """<html><head><title>{t}</title></head><body style="font-family:system-ui;max-width:720px;margin:40px auto;line-height:1.6">
+<h1>{t}</h1>{b}</body></html>"""
+
+
+@app.get("/", response_class=HTMLResponse)
+def home():
+    return PAGE.format(t="yt-uploader", b="<p>A private tool used by Sidequest Labs LLC to upload its own videos to its own YouTube channels. It is not offered to other users.</p><p><a href='/privacy'>Privacy policy</a> &middot; <a href='/terms'>Terms</a></p><p>Contact: mishuk77@gmail.com</p>")
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+def privacy():
+    return PAGE.format(t="Privacy policy", b="<p>yt-uploader is used only by its owner to upload videos to the owner's YouTube channels through the YouTube Data API.</p><p>It requests the YouTube upload and read-only scopes. The only Google data it uses is the authorization token needed to upload, and the channel name and ID to confirm the right channel. Tokens are stored as encrypted environment variables on the hosting provider and are never shared or sold. No other personal data is collected.</p><p>You can revoke access at any time at <a href='https://myaccount.google.com/permissions'>myaccount.google.com/permissions</a>. Use of Google data follows the <a href='https://developers.google.com/terms/api-services-user-data-policy'>Google API Services User Data Policy</a>, and use of YouTube follows the <a href='https://www.youtube.com/t/terms'>YouTube Terms of Service</a>.</p><p>Contact: mishuk77@gmail.com</p>")
+
+
+@app.get("/terms", response_class=HTMLResponse)
+def terms():
+    return PAGE.format(t="Terms of service", b="<p>yt-uploader is a private tool operated by Sidequest Labs LLC for uploading its own content. It is provided as is, with no warranty, and is not available for public use. Uploaded content must follow the <a href='https://www.youtube.com/t/terms'>YouTube Terms of Service</a>.</p><p>Contact: mishuk77@gmail.com</p>")
+
+
 # ---------------------------------------------------------------- auth flow
 @app.get("/health")
 def health():
